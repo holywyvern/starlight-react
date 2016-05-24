@@ -1,0 +1,17 @@
+{
+  "name": "starlight-react-demo",
+  "homepage": "https://github.com/holywyvern/starlight-react",
+  "authors": [
+    "Ramiro Rojo <ramiro.rojo.cretta@gmail.com>"
+  ],
+  "description": "Demo for starlight-react",
+  "main": "index.html",
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
