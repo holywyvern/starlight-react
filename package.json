@@ -1,0 +1,26 @@
+{
+  "name": "starlight-react",
+  "version": "1.0.0",
+  "description": "A series of react component using starlight-ui",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holywyvern/starlight-react.git"
+  },
+  "author": "Ramiro Rojo <ramiro.rojo.cretta@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holywyvern/starlight-react/issues"
+  },
+  "homepage": "https://github.com/holywyvern/starlight-react#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}
