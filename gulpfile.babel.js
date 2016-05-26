@@ -29,7 +29,7 @@ gulp.task('build:test', ['build', 'copy:css'], () => {
     .pipe(source('demo.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./demo/js'));   
 });
