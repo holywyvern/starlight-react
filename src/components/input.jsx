@@ -58,32 +58,21 @@ export default class Input extends React.Component {
   
   renderDefault(id, props) {
     props.id = id;
-    props.value = this.state.value;
+    props.defaultValue = this.state.value;
+    delete props.value;
     delete props.checked;
     return (
       <input {...props} />
-    );
-  }
-
-  renderRadio(id, props) {
-    props.id = id;
-    props.checked = this.state.checked;
-    props.onChange = this.onChange;  
-    delete props.checked;
-    return (
-      <div className="radio">
-        <input {...props} />
-        <label htmlFor={id}>{this.props.label}</label>
-      </div>
     );
   }
   
   renderCheckbox(id, props) {
     props.id = id;
     props.checked = this.state.checked;
-    props.onChange = this.onChange;    
+    props.defaultChecked = props.checked; 
+    delete props.checked;
     return (
-      <div className="checkbox">
+      <div className={props.type}>
         <input {...props} />
         <label htmlFor={id}>{this.props.label}</label>
       </div>
@@ -105,7 +94,6 @@ export default class Input extends React.Component {
       case 'select':
         return this.renderSelect(id, props);
       case 'radio':
-        return this.renderRadio(id, props); 
       case 'checkbox':
         return this.renderCheckbox(id, props);
       case 'set':

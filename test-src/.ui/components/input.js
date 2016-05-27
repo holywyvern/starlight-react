@@ -46,7 +46,6 @@ var Input = function (_React$Component) {
     _this.state = {
       checked: props.checked || false,
       value: props.value || void 0,
-      disabled: props.disabled || false,
       id: props.id || (0, _utils.uniqueId)()
     };
     _this.onChange = props.onChange || onChange.bind(_this);
@@ -85,37 +84,21 @@ var Input = function (_React$Component) {
     key: 'renderDefault',
     value: function renderDefault(id, props) {
       props.id = id;
-      props.value = this.state.value;
+      props.defaultValue = this.state.value;
+      delete props.value;
       delete props.checked;
       return _react2.default.createElement('input', props);
-    }
-  }, {
-    key: 'renderRadio',
-    value: function renderRadio(id, props) {
-      props.id = id;
-      props.checked = this.state.checked;
-      props.onChange = this.onChange;
-      delete props.checked;
-      return _react2.default.createElement(
-        'div',
-        { className: 'radio' },
-        _react2.default.createElement('input', props),
-        _react2.default.createElement(
-          'label',
-          { htmlFor: id },
-          this.props.label
-        )
-      );
     }
   }, {
     key: 'renderCheckbox',
     value: function renderCheckbox(id, props) {
       props.id = id;
       props.checked = this.state.checked;
-      props.onChange = this.onChange;
+      props.defaultChecked = props.checked;
+      delete props.checked;
       return _react2.default.createElement(
         'div',
-        { className: 'checkbox' },
+        { className: props.type },
         _react2.default.createElement('input', props),
         _react2.default.createElement(
           'label',
@@ -146,7 +129,6 @@ var Input = function (_React$Component) {
         case 'select':
           return this.renderSelect(id, props);
         case 'radio':
-          return this.renderRadio(id, props);
         case 'checkbox':
           return this.renderCheckbox(id, props);
         case 'set':

@@ -19743,7 +19743,6 @@ var Input = function (_React$Component) {
     _this.state = {
       checked: props.checked || false,
       value: props.value || void 0,
-      disabled: props.disabled || false,
       id: props.id || (0, _utils.uniqueId)()
     };
     _this.onChange = props.onChange || onChange.bind(_this);
@@ -19778,26 +19777,19 @@ var Input = function (_React$Component) {
     key: 'renderDefault',
     value: function renderDefault(id, props) {
       props.id = id;
-      props.value = this.state.value;
+      props.defaultValue = this.state.value;
+      delete props.value;
       delete props.checked;
       return _react2.default.createElement('input', props);
-    }
-  }, {
-    key: 'renderRadio',
-    value: function renderRadio(id, props) {
-      props.id = id;
-      props.checked = this.state.checked;
-      props.onChange = this.onChange;
-      delete props.checked;
-      return _react2.default.createElement('div', { className: 'radio' }, _react2.default.createElement('input', props), _react2.default.createElement('label', { htmlFor: id }, this.props.label));
     }
   }, {
     key: 'renderCheckbox',
     value: function renderCheckbox(id, props) {
       props.id = id;
       props.checked = this.state.checked;
-      props.onChange = this.onChange;
-      return _react2.default.createElement('div', { className: 'checkbox' }, _react2.default.createElement('input', props), _react2.default.createElement('label', { htmlFor: id }, this.props.label));
+      props.defaultChecked = props.checked;
+      delete props.checked;
+      return _react2.default.createElement('div', { className: props.type }, _react2.default.createElement('input', props), _react2.default.createElement('label', { htmlFor: id }, this.props.label));
     }
   }, {
     key: 'renderSet',
@@ -19817,7 +19809,6 @@ var Input = function (_React$Component) {
         case 'select':
           return this.renderSelect(id, props);
         case 'radio':
-          return this.renderRadio(id, props);
         case 'checkbox':
           return this.renderCheckbox(id, props);
         case 'set':
@@ -19905,7 +19896,7 @@ var InputGroup = exports.InputGroup = function (_React$Component2) {
 Input.Group = InputGroup;
 
 
-},{"../utils":172,"react":167}],169:[function(require,module,exports){
+},{"../utils":173,"react":167}],169:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20025,6 +20016,151 @@ Menu.Item = MenuItem;
 
 
 },{"react":167}],170:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TabPage = undefined;
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Tab = function (_React$Component) {
+  _inherits(Tab, _React$Component);
+
+  function Tab(props) {
+    _classCallCheck(this, Tab);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Tab).call(this));
+
+    _this.state = { index: props.selected || 0 };
+    _this.selectItem = _this.selectItem.bind(_this);
+    return _this;
+  }
+
+  _createClass(Tab, [{
+    key: 'selectItem',
+    value: function selectItem(e) {
+      var index = Number(e.target.getAttribute('data-tab-index'));
+      var child = this.children[index];
+      if (!child.props.disabled) {
+        this.setState({ index: index });
+      }
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      var selected = typeof props.selected != 'undefined' ? props.selected : this.state.selected;
+      this.setState({ selected: selected });
+    }
+  }, {
+    key: 'makeHeaders',
+    value: function makeHeaders() {
+      var result = [];
+      var children = this.children;
+      for (var i = 0, length = children.length; i < length; ++i) {
+        var className = [];
+        if (i === this.state.index) className.push('active');
+        if (children[i].props.disabled) className.push('disabled');
+        result.push(_react2.default.createElement('li', { className: className.join(' '), key: i }, _react2.default.createElement('a', { href: '#', onClick: this.selectItem, 'data-tab-index': i }, [children[i].props.title])));
+      }
+      return result;
+    }
+  }, {
+    key: 'makeBodies',
+    value: function makeBodies() {
+      var result = [];
+      var children = this.children;
+      for (var i = 0, length = children.length; i < length; ++i) {
+        var className = [];
+        if (i === this.state.index) className.push('active');
+        if (children[i].props.disabled) className.push('disabled');
+        result.push(_react2.default.createElement('div', { className: className.join(' '), key: i, 'data-tab-index': i }, children[i]));
+      }
+      return result;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var headers = this.makeHeaders();
+      var bodies = this.makeBodies();
+      return _react2.default.createElement('div', { className: 'tab-container' }, _react2.default.createElement('ul', { className: 'header' }, headers), _react2.default.createElement('div', { className: 'body' }, bodies));
+    }
+  }, {
+    key: 'children',
+    get: function get() {
+      return this.props.children instanceof Array ? this.props.children : [this.props.children];
+    }
+  }]);
+
+  return Tab;
+}(_react2.default.Component);
+
+exports.default = Tab;
+
+var TabPage = exports.TabPage = function (_React$Component2) {
+  _inherits(TabPage, _React$Component2);
+
+  function TabPage(props) {
+    _classCallCheck(this, TabPage);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(TabPage).call(this));
+  }
+
+  _createClass(TabPage, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', null, this.props.children);
+    }
+  }]);
+
+  return TabPage;
+}(_react2.default.Component);
+
+TabPage.defaultProps = {
+  title: ''
+};
+
+Tab.Page = TabPage;
+
+
+},{"react":167}],171:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20114,13 +20250,13 @@ Window.defaultProps = {
 };
 
 
-},{"react":167}],171:[function(require,module,exports){
+},{"react":167}],172:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
    value: true
 });
-exports.InputGroup = exports.Input = exports.MenuItem = exports.Menu = exports.Window = undefined;
+exports.TabPage = exports.Tab = exports.InputGroup = exports.Input = exports.MenuItem = exports.Menu = exports.Window = undefined;
 
 var _react = require('react');
 
@@ -20138,28 +20274,37 @@ var _input = require('./components/input');
 
 var _input2 = _interopRequireDefault(_input);
 
+var _tab = require('./components/tab');
+
+var _tab2 = _interopRequireDefault(_tab);
+
 function _interopRequireDefault(obj) {
    return obj && obj.__esModule ? obj : { default: obj };
 }
 
 var MenuItem = _menu2.default.Item;
 var InputGroup = _input2.default.Group;
+var TabPage = _tab2.default.Page;
 
 exports.Window = _window2.default;
 exports.Menu = _menu2.default;
 exports.MenuItem = MenuItem;
 exports.Input = _input2.default;
 exports.InputGroup = InputGroup;
+exports.Tab = _tab2.default;
+exports.TabPage = TabPage;
 exports.default = {
    Window: _window2.default,
    Menu: _menu2.default,
    MenuItem: MenuItem,
    Input: _input2.default,
-   InputGroup: InputGroup
+   InputGroup: InputGroup,
+   Tab: _tab2.default,
+   TabPage: TabPage
 };
 
 
-},{"./components/input":168,"./components/menu":169,"./components/window":170,"react":167}],172:[function(require,module,exports){
+},{"./components/input":168,"./components/menu":169,"./components/tab":170,"./components/window":171,"react":167}],173:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20232,7 +20377,7 @@ exports.default = {
 };
 
 
-},{}],173:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20326,11 +20471,30 @@ function toogleMinimizer() {
         _react2.default.createElement(_index.Input, { type: 'radio', name: 'a-radio', label: 'C' }),
         _react2.default.createElement(_index.Input, { type: 'radio', name: 'a-radio', label: 'D', disabled: true })
       )
+    ),
+    _react2.default.createElement(
+      _index.Tab,
+      null,
+      _react2.default.createElement(
+        _index.Tab.Page,
+        { title: 'A Tab 1' },
+        'Some content 1'
+      ),
+      _react2.default.createElement(
+        _index.Tab.Page,
+        { title: 'A Tab 2' },
+        'Some content 2'
+      ),
+      _react2.default.createElement(
+        _index.Tab.Page,
+        { title: 'A Tab 3', disabled: true },
+        'Some content 3'
+      )
     )
   ), APP);
 }
 toogleMinimizer();
 
-},{"./.ui/index":171,"react":167,"react-dom":28}]},{},[173]);
+},{"./.ui/index":172,"react":167,"react-dom":28}]},{},[174]);
 
 //# sourceMappingURL=demo.js.map

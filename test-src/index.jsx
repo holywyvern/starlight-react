@@ -2,7 +2,7 @@
 import React      from 'react';
 import { render } from 'react-dom';
 
-import { Window, Menu, Input } from './.ui/index';
+import { Window, Menu, Input, Tab } from './.ui/index';
 
 let maximized = false;
 const APP = document.getElementById('app');
@@ -61,6 +61,17 @@ function toogleMinimizer() {
             <Input type="radio" name="a-radio" label="D" disabled={true} />
           </Input.Group>
         </form>
+        <Tab>
+          <Tab.Page title="A Tab 1">
+            Some content 1
+          </Tab.Page>
+          <Tab.Page title="A Tab 2">
+            Some content 2
+          </Tab.Page>    
+          <Tab.Page title="A Tab 3" disabled={true}>
+            Some content 3
+          </Tab.Page>                  
+        </Tab>
       </Window>,
        APP
   );
