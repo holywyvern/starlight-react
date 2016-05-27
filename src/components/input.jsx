@@ -22,13 +22,20 @@ export default class Input extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: props.checked,
-      value: props.value,
-      disabled: props.disabled,
+      checked: props.checked || false,
+      value: props.value || void 0,
+      disabled: props.disabled || false,
       id: props.id || uniqueId()
     }; 
     this.onChange = props.onChange || onChange.bind(this);
   }
+  
+  componentWillReceiveProps(props) {
+    let id = typeof props.id != 'undefined' ? props.id : this.state.id;
+    let checked = typeof props.checked != 'undefined' ? props.checked : this.state.checked;
+    let value   = typeof props.value != 'undefined'   ? props.value : this.state.value;
+    this.setState({ id, checked, value });
+  }    
   
   renderTextarea(id, props) {
     props.id = id;
@@ -63,6 +70,7 @@ export default class Input extends React.Component {
     props.id = id;
     props.checked = this.state.checked;
     props.onChange = this.onChange;  
+    delete props.checked;
     return (
       <div className="radio">
         <input {...props} />
@@ -124,8 +132,8 @@ export class InputGroup extends React.Component {
   
   componentWillReceiveProps(props) {
     let id = typeof props.id != 'undefined' ? props.id : this.state.id;
-    let checked = props.checked || this.state.checked;
-    let value = props.value || this.state.value;
+    let checked = typeof props.checked != 'undefined' ? props.checked : this.state.checked;
+    let value   = typeof props.value != 'undefined'   ? props.value : this.state.value;
     this.setState({ id, checked, value });
   }  
   

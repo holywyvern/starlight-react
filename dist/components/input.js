@@ -44,9 +44,9 @@ var Input = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Input).call(this, props));
 
     _this.state = {
-      checked: props.checked,
-      value: props.value,
-      disabled: props.disabled,
+      checked: props.checked || false,
+      value: props.value || void 0,
+      disabled: props.disabled || false,
       id: props.id || (0, _utils.uniqueId)()
     };
     _this.onChange = props.onChange || onChange.bind(_this);
@@ -54,6 +54,14 @@ var Input = function (_React$Component) {
   }
 
   _createClass(Input, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      var id = typeof props.id != 'undefined' ? props.id : this.state.id;
+      var checked = typeof props.checked != 'undefined' ? props.checked : this.state.checked;
+      var value = typeof props.value != 'undefined' ? props.value : this.state.value;
+      this.setState({ id: id, checked: checked, value: value });
+    }
+  }, {
     key: 'renderTextarea',
     value: function renderTextarea(id, props) {
       props.id = id;
@@ -87,6 +95,7 @@ var Input = function (_React$Component) {
       props.id = id;
       props.checked = this.state.checked;
       props.onChange = this.onChange;
+      delete props.checked;
       return _react2.default.createElement(
         'div',
         { className: 'radio' },
@@ -174,8 +183,8 @@ var InputGroup = exports.InputGroup = function (_React$Component2) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       var id = typeof props.id != 'undefined' ? props.id : this.state.id;
-      var checked = props.checked || this.state.checked;
-      var value = props.value || this.state.value;
+      var checked = typeof props.checked != 'undefined' ? props.checked : this.state.checked;
+      var value = typeof props.value != 'undefined' ? props.value : this.state.value;
       this.setState({ id: id, checked: checked, value: value });
     }
   }, {
