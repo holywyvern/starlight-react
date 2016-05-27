@@ -24,7 +24,6 @@ export default class Input extends React.Component {
     this.state = {
       checked: props.checked || false,
       value: props.value || void 0,
-      disabled: props.disabled || false,
       id: props.id || uniqueId()
     }; 
     this.onChange = props.onChange || onChange.bind(this);
